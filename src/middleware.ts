@@ -12,7 +12,7 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(login);
     }
 
-    if (pathname === "/login" && isLoggedIn) {
+    if ((pathname === "/login" || pathname === "/register") && isLoggedIn) {
         const next = req.nextUrl.clone();
         next.pathname = "/dashboard";
         return NextResponse.redirect(next);
@@ -21,5 +21,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*", "/login"],
+    matcher: ["/dashboard/:path*", "/login", "/register"],
 };

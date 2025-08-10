@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { getUser } from "@/lib/auth";
 
 type SpringHealth = { status: "UP" | "DOWN" } & Record<string, unknown>;
 
@@ -19,30 +20,10 @@ async function getHealth(): Promise<SpringHealth> {
     }
 }
 
-
-type Me = { id: string; username: string; email: string };
-
-async function getMe(): Promise<Me | null> {
-    const h = headers();
-    const host = (await h).get("host") || "localhost:3000";
-    const protocol = process.env.VERCEL ? "https" : "http";
-
-    // Forward the original request cookies to the BFF
-    const cookie = (await h).get("cookie") ?? "";
-
-    const res = await fetch(`${protocol}://${host}/api/auth/me`, {
-        headers: { cookie },
-        cache: "no-store",
-    });
-
-    if (!res.ok) return null;
-    return res.json();
-}
-
 export default async function DashboardPage() {
     const health = await getHealth();
     const isUp = health.status === "UP";
-    const me = await getMe();
+    const me = await getUser();
 
 
     return (

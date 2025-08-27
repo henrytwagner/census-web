@@ -17,7 +17,7 @@ export const Header = () => {
                 <p className="text-xs not-italic font-normal">Search</p>
             </div>
             <div className="flex w-[300px] justify-end items-center gap-2.5 flex-shrink-0 text-text">
-                <p className="text-xl not-italic font-normal">􀊫</p>
+                <p className="text-xl not-italic font-normal">☰</p>
                 <div className="flex w-8 h-8 flex-col justify-center items-center flex-shrink-0 rounded-full bg-blue-700 text-c-white">HW</div>
             </div>
         </header>

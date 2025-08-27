@@ -9,15 +9,15 @@ export const Body = () => {
         <>
             <button
                 onClick={() => setSidebar(!sidebar)}
-                className="absolute top-2 left-2 z-50 h-10 w-10 rounded-md bg-blue-500 hover:bg-blue-600"
+                className={sidebar?"absolute top-12 left-50 z-50 h-8 w-6 rounded-br-md bg-bg hover:bg-bg-dark border border-border border-l-0 ":"absolute top-12 z-50 h-8 w-6 rounded-br-md bg-bg hover:bg-bg-dark border border-border border-l-0 "}
             >
                 {sidebar ? "✕" : "☰"}
             </button>
-            {sidebar && (<div className="flex w-[174px] h-full p-2 flex-col items-start gap-2.5 flex-shrink-0 border-r border-r-border">
+            {sidebar && (<div className="flex w-50 h-full p-2 flex-col items-start gap-2.5 flex-shrink-0 border-r border-r-border">
                 <div className="flex justify-between items-start self-stretch text-text">
-                    <p className="text-xs not-italic font-normal">􀏭</p>
-                    <p className="text-xs not-italic font-normal">Contacts</p>
-                    <p className="text-xs not-italic font-normal">􀏭</p>
+                    <p className="text-s not-italic font-normal">←</p>
+                    <p className="text-s not-italic font-normal">Contacts</p>
+                    <p className="text-s not-italic font-normal">+</p>
                 </div>
                 <div className="flex h-6 p-1 justify-start items-center flex-shrink-0 w-full bg-bg rounded-full gap-1.5 text-text-muted">
                     <p className="text-xs not-italic font-normal">􀊫</p>
@@ -75,7 +75,7 @@ export const Body = () => {
                             <p className="text-base not-italic font-normal text-nowrap">Public Profile</p>
                         </div>
                         <div className="flex py-1 px-3 justify-center items-center gap-2 self-stretch border-b border-b-border">
-                            <p className="text-xl not-italic font-normal">􀉪</p>
+                            <p className="text-xl not-italic font-normal">+</p>
                         </div>
                         <div className="flex w-full justify-center items-center self-stretch border-b border-b-border"></div>
                     </div>

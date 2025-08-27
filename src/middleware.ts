@@ -12,9 +12,15 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(login);
     }
 
+    if (pathname === "" && !isLoggedIn) {
+        const next = req.nextUrl.clone();
+        next.pathname = "/login";
+        return NextResponse.redirect(next);
+    }
+
     if ((pathname === "/login" || pathname === "/register") && isLoggedIn) {
         const next = req.nextUrl.clone();
-        next.pathname = "/dashboard";
+        next.pathname = "/";
         return NextResponse.redirect(next);
     }
     return NextResponse.next();

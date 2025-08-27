@@ -25,7 +25,7 @@ export default function LoginPage() {
         });
 
         if (res.ok) {
-            const next = new URLSearchParams(window.location.search).get("next") || "/dashboard";
+            const next = new URLSearchParams(window.location.search).get("next") || "/";
             window.location.href = next;
             return;
         }

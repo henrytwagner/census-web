@@ -1,4 +1,4 @@
-import { Body } from "@/components/home/Body";
+import { Body } from "@/app/(app)/_components/Body";
 
 export default function Home() {
   return (

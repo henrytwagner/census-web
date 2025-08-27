@@ -1,6 +1,6 @@
 export const Header = () => {
     return (
-        <header className="flex p-2 justify-between items-center bg-bg-dark border-b-1 border-b-border">
+        <header className="flex p-2 justify-between items-center bg-bg-dark border-b border-b-border">
             <div className="flex items-center flex-shrink-0 gap-2 w-[300px]">
                 <div className="flex w-8 h-8 items-center flex-shrink-0 rounded-lg bg-white"></div>
                 <div className="w-[1px] h-8 bg-border"></div>

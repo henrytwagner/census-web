@@ -1,10 +1,8 @@
 import { Body } from "@/components/home/Body";
-import { Header } from "@/components/home/Header";
 
 export default function Home() {
   return (
-    <main>
-      <Header />
+    <main className="flex items-start w-full h-full bg-bg-dark">
       <Body />
     </main>
   );

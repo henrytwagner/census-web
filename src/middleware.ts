@@ -5,22 +5,16 @@ export function middleware(req: NextRequest) {
     const isLoggedIn = Boolean(req.cookies.get("ACCESS_TOKEN"));
     const { pathname } = req.nextUrl;
 
-    if (pathname.startsWith("/dashboard") && !isLoggedIn) {
+    if (pathname.startsWith("/c") || pathname.startsWith("/o") && !isLoggedIn) {
         const login = req.nextUrl.clone();
         login.pathname = "/login";
         login.searchParams.set("next", pathname);
         return NextResponse.redirect(login);
     }
 
-    if (pathname === "" && !isLoggedIn) {
-        const next = req.nextUrl.clone();
-        next.pathname = "/login";
-        return NextResponse.redirect(next);
-    }
-
     if ((pathname === "/login" || pathname === "/register") && isLoggedIn) {
         const next = req.nextUrl.clone();
-        next.pathname = "/";
+        next.pathname = "/c";
         return NextResponse.redirect(next);
     }
     return NextResponse.next();

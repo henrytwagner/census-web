@@ -3,6 +3,7 @@
 import { useState } from "react";
 import PersonPage from "./PersonPage";
 import ContactSidebar from "./ContactSidebar";
+import OrganizationSidebar from "./OrganizationSidebar";
 
 export const Contact = () => {
     const [sidebar, setSidebar] = useState(false);
@@ -15,7 +16,7 @@ export const Contact = () => {
             >
                 {sidebar ? "✕" : "☰"}
             </button>
-            {sidebar && (<ContactSidebar />)}
+            {sidebar && (<OrganizationSidebar />)}
             <PersonPage />
         </>
     );

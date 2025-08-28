@@ -1,6 +1,6 @@
 export default function ContactListHeader() {
 
-    const type = "contact";
+    const type = "organization"; // "contact" | "organization"
 
 
     if (type === "contact") {

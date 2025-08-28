@@ -12,6 +12,7 @@ export const Header = () => {
                     <div className="w-8 h-8 flex-shrink-0 rounded-lg bg-red-500 -ml-3 z-10"></div>
                 </div>
             </div>
+            {/* IDEA - Back arrow and possibly forward arrow for navigating through pages on desktop version*/}
             <div className="flex h-6 p-1 justify-center items-center flex-shrink-0 w-90 bg-bg rounded-full gap-1.5 text-text-muted">
                 <p className="text-xs not-italic font-normal">􀊫</p>
                 <p className="text-xs not-italic font-normal">Search</p>

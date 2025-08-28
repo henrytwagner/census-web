@@ -2,7 +2,7 @@ import ContactList from "../_components/ContactList";
 
 export default function Contacts() {
     return (
-        <main className="flex items-start w-full h-full bg-bg-dark">
+        <main className="flex items-start w-full h-full bg-bg-dark overflow-hidden">
             <ContactList />
         </main>
     );

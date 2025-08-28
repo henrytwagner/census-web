@@ -1,4 +1,5 @@
 export default function Tabbar() {
+    {/* TODO: make tabs inputs into component */}
     return (
         <div className="flex flex-col items-start self-stretch">
             <div className="flex h-8 items-start self-stretch">

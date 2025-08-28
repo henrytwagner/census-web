@@ -2,7 +2,7 @@ import Tabbar from "./Tabbar";
 
 export default function ContactPage() {
     return (
-        <div className="flex flex-1 w-full h-full px-22 py-9 flex-col items-start gap-6 flex-shrink-0 bg-bg-dark">
+        <div className="flex flex-1 w-full h-full px-40 py-9 flex-col items-start gap-6 flex-shrink-0 bg-bg-dark">
             <div className="flex items-center gap-4 self-stretch">
                 {/* Profile Photo*/}
                 <div className="flex w-24 h-24 justify-end items-center rounded-full bg-blue-500"></div>

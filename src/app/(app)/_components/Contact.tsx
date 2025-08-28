@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import ContactList from "./ContactList";
-import ContactPage from "./PersonPage";
+import PersonPage from "./PersonPage";
 
-export const Body = () => {
+export const Contact = () => {
     const [sidebar, setSidebar] = useState(false);
 
     return (
@@ -16,7 +16,7 @@ export const Body = () => {
                 {sidebar ? "✕" : "☰"}
             </button>
             {sidebar && (<ContactList />)}
-            <ContactPage />
+            <PersonPage />
         </>
     );
 }

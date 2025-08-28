@@ -1,7 +1,10 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-const backend = process.env.BACKEND_URL!; // e.g. http://localhost:8080
+const backend =
+  process.env.BACKEND_URL ||
+  process.env.API_BASE_URL ||
+  "http://localhost:8080"; // safe fallback for dev
 
 export async function POST(req: Request) {
   try {

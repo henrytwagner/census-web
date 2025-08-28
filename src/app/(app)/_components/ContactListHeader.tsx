@@ -1,8 +1,8 @@
-export default function ContactListHeader() {
+interface ContactListHeaderProps {
+    type: string;
+}
 
-    const type = "organization"; // "contact" | "organization"
-
-
+export default function ContactListHeader({ type }: ContactListHeaderProps) {
     if (type === "contact") {
         return (
             <div className="flex items-center gap-4 self-stretch justify-between">

@@ -1,9 +1,9 @@
 import ContactList from "../_components/ContactList";
 
-export default function Contacts() {
+export default function Home() {
     return (
         <main className="flex items-start w-full h-full bg-bg-dark overflow-hidden">
-            <ContactList />
+            <ContactList type="contact"/>
         </main>
     );
 }

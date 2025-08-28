@@ -3,12 +3,16 @@ import ContactListHeader from "./ContactListHeader";
 import ContactSidebar from "./ContactSidebar";
 import Tabbar from "./Tabbar";
 
-export default function ContactList() {
+interface ContactListProps {
+    type: string;
+}
+
+export default function ContactList({ type }: ContactListProps) {
     return (
         // Whole Page (Padded)
         <div className="overflow-scroll flex flex-1 w-full h-full px-40 pb-30 flex-col items-start gap-6 flex-shrink-0 bg-bg-dark">
             {/* Header */}
-            <ContactListHeader />
+        <ContactListHeader type={type}/>
             {/* Potentially a card carosel with notifications are action items or something */}
             {/* Tab Bar */}
             <Tabbar />

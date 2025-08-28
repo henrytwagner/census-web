@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react";
-import ContactList from "./ContactList";
 import PersonPage from "./PersonPage";
+import ContactSidebar from "./ContactSidebar";
 
 export const Contact = () => {
     const [sidebar, setSidebar] = useState(false);
@@ -15,7 +15,7 @@ export const Contact = () => {
             >
                 {sidebar ? "✕" : "☰"}
             </button>
-            {sidebar && (<ContactList />)}
+            {sidebar && (<ContactSidebar />)}
             <PersonPage />
         </>
     );

@@ -1,10 +1,10 @@
-// ContactListContacts.tsx
+// OrganizationMembersPage.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";   // <-- import hook
 import PersonRow from "./PersonRow";
-import Searchbar from "./Searchbar";
+import Searchbar from "../../../_components/Searchbar";
 
 type UserDto = {
     id: string;
@@ -21,7 +21,7 @@ type UserDto = {
     }
 };
 
-export default function ContactListContacts() {
+export default function OrganizationMembersPage() {
     const [data, setData] = useState<UserDto[] | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +40,7 @@ export default function ContactListContacts() {
                 const json = JSON.parse(txt) as UserDto[];
                 if (alive) setData(json);
             } catch (e) {
-                if (alive) setError(e instanceof Error ? e.message : "Failed to load contacts");
+                if (alive) setError(e instanceof Error ? e.message : "Failed to load users");
             }
         })();
         return () => {
@@ -71,6 +71,7 @@ export default function ContactListContacts() {
                             username={username}
                             phone={phone}
                             email={email}
+                            imageUrl={c.profile.profileImageUrl}
                             lastActive={lastActive}
                             status={status}
                             statusColorClass={statusColorClass}

@@ -6,6 +6,14 @@ import { useParams, useRouter } from "next/navigation";
 import Searchbar from "../../../_components/Searchbar";
 import UserRow from "./UserRow";
 
+// Shapes we expect from the memberships endpoint
+type UserProfileDto = {
+    firstName?: string;
+    lastName?: string;
+    bio?: string;
+    profileImageUrl?: string;
+};
+
 type UserDto = {
     id: string;
     username: string;
@@ -13,13 +21,20 @@ type UserDto = {
     phone: string;
     lastActive?: string;
     status?: string;
-    profile: {
-        firstName?: string;
-        lastName?: string;
-        bio?: string;
-        profileImageUrl?: string;
-    };
+    profile: UserProfileDto;
 };
+
+type MembershipDto = {
+    id: string;              // membership id
+    role?: string;
+    joinedAt?: string;
+    user: UserDto;           // ← the actual user we want to render
+};
+
+// tolerate both raw users [] and memberships [] from backend
+function isMembershipArray(arr: unknown[]): arr is MembershipDto[] {
+    return arr.length === 0 || typeof (arr[0] as any)?.user === "object";
+}
 
 export default function OrganizationMembersPage() {
     const [data, setData] = useState<UserDto[] | null>(null);
@@ -32,17 +47,32 @@ export default function OrganizationMembersPage() {
     useEffect(() => {
         if (!orgID) return;
         let alive = true;
+
         (async () => {
             try {
                 const res = await fetch(`/api/memberships/organization/${orgID}`, { cache: "no-store" });
                 const txt = await res.text();
                 if (!res.ok) throw new Error(txt || `Failed: ${res.status}`);
-                const json = JSON.parse(txt) as UserDto[];
-                if (alive) setData(json);
+
+                const payload = JSON.parse(txt);
+
+                // unwrap possible wrappers: array OR {items|content|data}
+                const list: unknown[] = Array.isArray(payload)
+                    ? payload
+                    : (payload?.items ?? payload?.content ?? payload?.data ?? []);
+
+                if (!Array.isArray(list)) throw new Error("Unexpected memberships response");
+
+                const users: UserDto[] = isMembershipArray(list)
+                    ? (list as MembershipDto[]).map(m => m.user)
+                    : (list as UserDto[]);
+
+                if (alive) setData(users);
             } catch (e) {
                 if (alive) setError(e instanceof Error ? e.message : "Failed to load users");
             }
         })();
+
         return () => { alive = false; };
     }, [orgID]);
 
@@ -51,25 +81,26 @@ export default function OrganizationMembersPage() {
             <Searchbar />
 
             {error ? null : data?.length
-                ? data.map((c) => {
-                    const username = c.username ? (c.username.startsWith("@") ? c.username : `@${c.username}`) : "@unknown";
-                    const phone = c.phone ?? "—";
-                    const email = c.email ?? "—";
-                    const lastActive = c.lastActive ? new Date(c.lastActive).toLocaleDateString() : "—";
-                    const status = c.status ?? "Active";
+                ? data.map((u) => {
+                    const username =
+                        u.username ? (u.username.startsWith("@") ? u.username : `@${u.username}`) : "@unknown";
+                    const phone = u.phone ?? "—";
+                    const email = u.email ?? "—";
+                    const lastActive = u.lastActive ? new Date(u.lastActive).toLocaleDateString() : "—";
+                    const status = u.status ?? "Active";
 
                     return (
                         <UserRow
-                            key={c.id}
-                            firstName={c.profile?.firstName ?? ""}
-                            lastName={c.profile?.lastName ?? ""}
+                            key={u.id}
+                            firstName={u.profile?.firstName ?? ""}
+                            lastName={u.profile?.lastName ?? ""}
                             username={username}
                             phone={phone}
                             email={email}
                             lastActive={lastActive}
                             status={status}
-                            imageUrl={c.profile?.profileImageUrl ?? undefined}
-                            onClick={() => router.push(`/o/${orgID}/${c.id}`)}
+                            imageUrl={u.profile?.profileImageUrl ?? undefined}
+                            onClick={() => router.push(`/o/${orgID}/${u.id}`)}
                         />
                     );
                 })

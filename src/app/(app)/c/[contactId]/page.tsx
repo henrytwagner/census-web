@@ -1,7 +1,7 @@
 "use client";
 
 import PersonPage from "../../_components/PersonPage";
-import ContactSidebar from "../../_components/ContactSidebar";
+import ContactSidebar from "./_components/Sidebar";
 import { useState } from "react";
 
 export default function Home() {

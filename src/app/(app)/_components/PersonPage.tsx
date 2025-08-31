@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import Tabbar from "./Tabbar";
-import OrganizationMembersPage from "../o/[orgId]/_components/OrganizationMembersPage";
+import OrganizationMembersPage from "../o/[orgId]/_components/OrganizationMembersTab";
 
 type TabPage = {
     key: string;
@@ -40,7 +40,7 @@ export default function ContactPage() {
                     ) : (
                         <span>{initials}</span>
                     )}
-                </div>  
+                </div>
                 {/* -------------*/}
                 <div className="flex flex-col justify-center items-start">
                     <p className="text-4xl not-italic font-normal text-text">Henry Wagner</p>

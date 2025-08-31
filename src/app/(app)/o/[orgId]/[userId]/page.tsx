@@ -1,9 +1,9 @@
 "use client";
 
 import PersonPage from "@/app/(app)/_components/PersonPage";
-import ContactSidebar from "@/app/(app)/_components/ContactSidebar";
+import ContactSidebar from "@/app/(app)/c/[contactId]/_components/Sidebar";
 import { useState } from "react";
-import OrganizationSidebar from "@/app/(app)/_components/OrganizationSidebar";
+import OrganizationSidebar from "@/app/(app)/o/[orgId]/[userId]/_components/Sidebar";
 
 export default function Home() {
     const [sidebar, setSidebar] = useState(true);

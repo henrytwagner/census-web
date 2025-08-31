@@ -1,10 +1,10 @@
-// src/app/c/[orgId]/page.tsx (your example file)
+// src/app/o/[orgId]/page.tsx (your example file)
 "use client";
 
 import { useState, useMemo } from "react";
 import Tabbar from "../../_components/Tabbar";
 import OrganizationHeader from "./_components/OrganizationHeader";
-import OrganizationMembersPage from "./_components/OrganizationMembersPage";
+import OrganizationMembersPage from "./_components/OrganizationMembersTab";
 
 type TabPage = {
     key: string;

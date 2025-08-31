@@ -2,35 +2,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";   // <-- import hook
-import PersonRow from "./PersonRow";
+import { useParams, useRouter } from "next/navigation";
 import Searchbar from "../../../_components/Searchbar";
+import UserRow from "./UserRow";
 
 type UserDto = {
     id: string;
     username: string;
     email: string;
     phone: string;
-    lastActive?: string; // ISO date string
-    status?: string; // ISO date string
+    lastActive?: string;
+    status?: string;
     profile: {
-        firstName: string;
-        lastName: string;
+        firstName?: string;
+        lastName?: string;
         bio?: string;
         profileImageUrl?: string;
-    }
+    };
 };
 
 export default function OrganizationMembersPage() {
     const [data, setData] = useState<UserDto[] | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const params = useParams();             // gives you the dynamic segments
-    const orgID = params.orgId as string;   // assumes your route is like
+    const params = useParams();
+    const orgID = params.orgId as string;
+    const router = useRouter();
 
     useEffect(() => {
-        if (!orgID) return; // don’t fire until we actually have the ID
-
+        if (!orgID) return;
         let alive = true;
         (async () => {
             try {
@@ -43,9 +43,7 @@ export default function OrganizationMembersPage() {
                 if (alive) setError(e instanceof Error ? e.message : "Failed to load users");
             }
         })();
-        return () => {
-            alive = false;
-        };
+        return () => { alive = false; };
     }, [orgID]);
 
     return (
@@ -57,24 +55,21 @@ export default function OrganizationMembersPage() {
                     const username = c.username ? (c.username.startsWith("@") ? c.username : `@${c.username}`) : "@unknown";
                     const phone = c.phone ?? "—";
                     const email = c.email ?? "—";
-                    const lastActive = c.lastActive
-                        ? new Date(c.lastActive).toLocaleDateString()
-                        : "—";
+                    const lastActive = c.lastActive ? new Date(c.lastActive).toLocaleDateString() : "—";
                     const status = c.status ?? "Active";
-                    const statusColorClass = status === "Active" ? "text-green-600" : "text-gray-400";
 
                     return (
-                        <PersonRow
+                        <UserRow
                             key={c.id}
-                            firstName={c.profile.firstName}
-                            lastName={c.profile.lastName}
+                            firstName={c.profile?.firstName ?? ""}
+                            lastName={c.profile?.lastName ?? ""}
                             username={username}
                             phone={phone}
                             email={email}
-                            imageUrl={c.profile.profileImageUrl}
                             lastActive={lastActive}
                             status={status}
-                            statusColorClass={statusColorClass}
+                            imageUrl={c.profile?.profileImageUrl ?? undefined}
+                            onClick={() => router.push(`/o/${orgID}/${c.id}`)}
                         />
                     );
                 })

@@ -1,4 +1,4 @@
-import Searchbar from "./Searchbar";
+import Searchbar from "../../../_components/Searchbar";
 
 export default function ContactSidebar() {
     return (

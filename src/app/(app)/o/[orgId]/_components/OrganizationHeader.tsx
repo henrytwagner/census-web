@@ -13,7 +13,7 @@ export default function OrganizationHeader({ name, description, imageUrl }: Orga
                     <p className="text-base text-muted">{description}</p>
                 </div>
                 <div>
-                    <div className="bg-red-700 flex w-32 h-32 items-center rounded-b-4xl">{imageUrl ? (
+                    <div className="bg-red-700 flex w-32 h-32 items-center rounded-b-4xl overflow-hidden">{imageUrl ? (
                         <img
                             src={imageUrl}
                             alt={`${name} logo`}

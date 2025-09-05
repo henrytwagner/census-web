@@ -100,8 +100,7 @@ export default function OrganizationSidebar() {
     return (
         <div className="flex w-50 h-full px-2 pb-8 flex-col items-start gap-2.5 flex-shrink-0 border-r border-r-border overflow-hidden">
             <div className="flex justify-between items-start self-stretch text-text">
-                <div className="py-2">
-                    <p className="text-s not-italic font-normal">←</p>
+                <div className="py-2 w-2.5">
                 </div>
                 <div className="flex flex-col items-center gap-2">
                     {/* icon box: keep same classes; show image if available */}

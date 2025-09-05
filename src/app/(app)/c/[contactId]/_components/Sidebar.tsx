@@ -61,7 +61,7 @@ export default function ContactSidebar() {
     return (
         <div className="flex w-50 h-full p-2 flex-col items-start gap-2.5 flex-shrink-0 border-r border-r-border overflow-hidden">
             <div className="flex justify-between items-start self-stretch text-text">
-                <p className="text-s not-italic font-normal">←</p>
+                <p className="w-2.5 text-s not-italic font-normal"></p>
                 <p className="text-s not-italic font-normal">Contacts</p>
                 <p className="text-s not-italic font-normal">+</p>
             </div>

@@ -11,7 +11,7 @@ export async function GET(
   _req: Request,
   ctx: { params: { orgId: string } }
 ) {
-  const { orgId } = ctx.params;
+  const { orgId } = await ctx.params;
 
   const token = (await cookies()).get("ACCESS_TOKEN")?.value;
   const headers = new Headers({ Accept: "application/json" });

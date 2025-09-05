@@ -33,7 +33,6 @@ export default function Home() {
                 )}
                 aria-hidden={!open}
             >
-                {/* optional: slide the inner content for a nicer reveal */}
                 <MemoSidebar />
             </aside>
 

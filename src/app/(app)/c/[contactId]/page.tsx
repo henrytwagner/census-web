@@ -17,7 +17,7 @@ export default function Home() {
                 onClick={() => setOpen((v) => !v)}
                 aria-expanded={open}
                 aria-controls="org-sidebar"
-                className="absolute left-0 top-0 z-50 h-fit w-6 py-2 px-2"
+                className="absolute z-50 h-fit w-6 py-2 px-2"
             >
                 {open ? "x" : "☰"}
             </button>

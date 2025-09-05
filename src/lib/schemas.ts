@@ -1,6 +1,16 @@
 // src/lib/schemas.ts
 import { z } from "zod";
 
+export const firstNameSchema = z
+  .string()
+  .min(1, "First name is required")
+  .max(32, "First name must be at most 32 characters");
+
+export const lastNameSchema = z
+  .string()
+  .min(1, "Last name is required")
+  .max(32, "Last name must be at most 32 characters");
+
 export const usernameSchema = z
   .string()
   .min(3, "Username must be at least 3 characters")
@@ -24,6 +34,8 @@ export const loginSchema = z.object({
 
 export const registerSchema = z
   .object({
+    firstName: firstNameSchema,
+    lastName: lastNameSchema,
     username: usernameSchema,
     email: emailSchema,
     password: passwordSchema,

@@ -22,6 +22,8 @@ export default function RegisterPage() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+                firstName: values.firstName,
+                lastName: values.lastName,
                 username: values.username,
                 email: values.email,
                 password: values.password,
@@ -50,6 +52,16 @@ export default function RegisterPage() {
             <h1 className="text-2xl font-semibold">Create your account</h1>
 
             <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4" noValidate>
+                <div>
+                    <input {...register("firstName")} placeholder="First Name" className="w-full rounded border p-2" />
+                    {errors.username && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
+                </div>
+
+                <div>
+                    <input {...register("lastName")} placeholder="Last Name" className="w-full rounded border p-2" />
+                    {errors.username && <p className="mt-1 text-sm text-red-600">{errors.lastName.message}</p>}
+                </div>
+
                 <div>
                     <input {...register("username")} placeholder="Username" className="w-full rounded border p-2" />
                     {errors.username && <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>}

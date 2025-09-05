@@ -1,5 +1,5 @@
 // src/lib/errors.ts
-export type FieldErrors = Partial<Record<"username" | "email" | "password" | "confirm" | "form", string>>;
+export type FieldErrors = Partial<Record<"firstName" | "lastName" | "username" | "email" | "password" | "confirm" | "form", string>>;
 
 type ApiError = {
   code: string;                       // REQUIRED now
@@ -7,7 +7,7 @@ type ApiError = {
   fieldErrors?: { field: string; message: string }[];
 };
 
-const FIELD_MAP = new Set(["username", "email", "password", "confirm"]);
+const FIELD_MAP = new Set(["firstName", "lastName", "username", "email", "password", "confirm"]);
 
 /** Parse API error (no heuristics). If payload is bad, show a safe generic form error. */
 export function normalizeAuthError(raw: string): FieldErrors {

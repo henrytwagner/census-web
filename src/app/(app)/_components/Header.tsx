@@ -14,6 +14,8 @@ export const Header = () => {
     const router = useRouter();
     const [orgs, setOrgs] = useState<OrganizationDto[]>([]);
     const [err, setErr] = useState<string | null>(null);
+    const [menuOpen, setMenuOpen] = useState(false);     // NEW: sidebar open/close state
+
 
     useEffect(() => {
         let alive = true;
@@ -91,11 +93,67 @@ export const Header = () => {
                 <p className="text-xs not-italic font-normal">Search</p>
             </div>
 
-            {/* Right menu/avatar — unchanged */}
+            {/* Right menu/avatar — now toggles sidebar & links to /p */}
             <div className="flex w-[300px] justify-end items-center gap-2.5 flex-shrink-0 text-text">
-                <p className="text-xl not-italic font-normal">☰</p>
-                <div className="flex w-8 h-8 flex-col justify-center items-center flex-shrink-0 rounded-full bg-blue-700 text-[#fff]">HW</div>
+                <button
+                    className="text-xl not-italic font-normal rounded-lg px-2 py-1 hover:bg-bg"
+                    aria-label="Open menu"
+                    onClick={() => setMenuOpen(true)}
+                >
+                    ☰
+                </button>
+                {/* Need to change to link to /p{ProfileID} */}
+                <button
+                    aria-label="Open profile"
+                    onClick={() => router.push('/p')}
+                    className="flex w-8 h-8 flex-col justify-center items-center flex-shrink-0 rounded-full bg-blue-700 text-[#fff]"
+                >
+                    HW
+                </button>
             </div>
+
+
+
+
+            {/* Return for Sidebar overlay + panel */}
+            {menuOpen && (
+                <>
+                    {/* Backdrop */}
+                    <button
+                        aria-label="Close sidebar"
+                        onClick={() => setMenuOpen(false)}
+                        className="fixed inset-0 z-40 bg-black/40"
+                    />
+
+                    {/* NOT Functioning Panel */}
+                    <aside className="fixed right-0 top-0 z-50 h-screen w-[320px] max-w-[85vw] bg-bg text-text border-l border-border shadow-2xl flex flex-col">
+                        <div className="p-4 border-b border-border flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-blue-700 text-white flex items-center justify-center">HW</div>
+                            <div className="leading-tight">
+                                <div className="font-semibold">Name</div>
+                                <div className="text-text-muted text-sm">@username</div>
+                            </div>
+                            <button
+                                onClick={() => setMenuOpen(false)}
+                                className="ml-auto rounded-lg px-2 py-1 text-sm text-text-muted hover:bg-bg-dark/50"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <nav className="p-2">
+                            <a className="block px-3 py-2 rounded-lg hover:bg-bg-dark" href="/preferences">Preferences</a>
+                            <a className="block px-3 py-2 rounded-lg hover:bg-bg-dark" href="/">Home</a>
+                        </nav>
+
+                        <div className="mt-auto p-4">
+                            <button className="text-left px-3 py-2 rounded-lg hover:bg-bg-dark w-full">
+                                Logout
+                            </button>
+                        </div>
+                    </aside>
+                </>
+            )}
         </header>
     );
 };

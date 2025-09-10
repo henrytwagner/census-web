@@ -1,4 +1,3 @@
-// src/app/o/[orgId]/page.tsx (your example file)
 "use client";
 
 import { useState, useMemo } from "react";
@@ -18,6 +17,8 @@ export default function Home() {
     const tabs: TabPage[] = useMemo(
         () => [
             { key: "contacts", icon: "👤", label: "Contact", component: <ContactTab /> },
+            // { key: "contacts", icon: "👤", label: "Contact", component: <ContactTab /> }, // ANDREW - replace tab names, creat new component with a tab
+
         ],
         []
     );

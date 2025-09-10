@@ -8,7 +8,7 @@ import ContactSidebar from "./_components/Sidebar";
 const MemoSidebar = memo(ContactSidebar);
 
 export default function Home() {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     return (
         <main className="relative flex h-full w-full overflow-hidden bg-bg-dark">

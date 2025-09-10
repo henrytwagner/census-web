@@ -47,13 +47,16 @@ export default function RegisterPage() {
         else if (!Object.keys(fieldErrors).length) setFormError("Registration failed");
     };
 
+
+    {/* BAKER CHECK THIS OUT FOR VALIDATION */}
+
     return (
         <main className="mx-auto mt-16 max-w-md p-6">
             <h1 className="text-2xl font-semibold">Create your account</h1>
 
             <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4" noValidate>
                 <div>
-                    <input {...register("firstName")} placeholder="First Name" className="w-full rounded border p-2" />
+                    <input {...register("firstName")} placeholder="First Name" className="w-full rounded border p-2" /> 
                     {errors.username && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
                 </div>
 

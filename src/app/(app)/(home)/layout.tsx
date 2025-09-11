@@ -17,11 +17,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     // define tabs (label/icon + component)
 
     return (
-        <main className="flex items-start w-full h-full bg-bg-dark">
+        <main className="flex w-full h-full bg-bg-dark justify-center">
             {/* Whole Page (Padded) */}
-            <div className="overflow-scroll flex flex-1 w-full h-full px-40 max-w-50 pb-30 flex-col items-start gap-6 flex-shrink-0 bg-bg-dark">
+            {/* IDEA - justify-start and go split screun calendar view */}
+            <div className="overflow-scroll flex flex-1 w-full h-full px-40 max-w-300 pb-30 flex-col items-start gap-6 flex-shrink-0 bg-bg-dark">
                 {/* Header */}
-
                 <HomeHeader
                     name="Census"
                 />

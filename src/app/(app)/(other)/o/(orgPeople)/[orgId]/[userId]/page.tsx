@@ -13,6 +13,7 @@ export default function Home() {
     const [open, setOpen] = useState(false);
     const params = useParams();
 
+    const { userId } = useParams() as { userId: string };
 
     return (
         <main className="relative flex h-full w-full overflow-hidden bg-bg-dark">
@@ -26,26 +27,28 @@ export default function Home() {
                 {open ? "x" : "☰"}
             </button>
 
-            {/* SIDEBAR: animate width; keep it in the flex flow */}
-            <aside
-                id="org-sidebar"
-                className={clsx(
-                    "z-40 h-full border-r border-border bg-bg-dark overflow-hidden",
-                    // sits in the flex row, so it naturally pushes content
-                    "transition-[width] duration-300",
-                    open ? "w-50" : "w-0 border-r-0" // <-- no translate; width drives layout
-                )}
-                aria-hidden={!open}
-            >
-                <MemoSidebar />
-            </aside>
+            <PersonProvider userId={userId}>
 
-            {/* CONTENT: flex-1 fills remaining space; no extra margins needed */}
-            <section className="h-full flex-1">
-                <PersonProvider userId={params.userId}>
+                {/* SIDEBAR: animate width; keep it in the flex flow */}
+                <aside
+                    id="org-sidebar"
+                    className={clsx(
+                        "z-40 h-full border-r border-border bg-bg-dark overflow-hidden",
+                        // sits in the flex row, so it naturally pushes content
+                        "transition-[width] duration-300",
+                        open ? "w-50" : "w-0 border-r-0" // <-- no translate; width drives layout
+                    )}
+                    aria-hidden={!open}
+                >
+                    <MemoSidebar />
+                </aside>
+
+                {/* CONTENT: flex-1 fills remaining space; no extra margins needed */}
+                <section className="h-full flex-1">
                     <PersonPage />
-                </PersonProvider>
-            </section>
-        </main>
+                </section>
+            </PersonProvider>
+
+        </main >
     );
 }

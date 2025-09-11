@@ -1,10 +1,10 @@
 "use client";
 
-import { useOrgRoute } from "@/app/(app)/(other)/o/(orgHome)/[orgId]/OrgRouteContext";
 import UserRow from "@/app/(app)/(other)/o/(orgHome)/[orgId]/_components/UserRow";
 import Searchbar from "@/app/(app)/_components/Searchbar";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useOrg } from "@/app/(app)/contexts/org/OrgContext";
 
 type UserProfileDto = {
     firstName?: string;
@@ -35,8 +35,8 @@ function isMembershipArray(arr: unknown[]): arr is MembershipDto[] {
 }
 
 export default function MembersPage() {
-    const { orgId } = useOrgRoute();                 // 👈 comes from layout
     const router = useRouter();
+    const { orgId } = useOrg();
 
     const [users, setUsers] = useState<UserDto[] | null>(null);
     const [error, setError] = useState<string | null>(null);

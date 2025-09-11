@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 export default async function ContactIndex({
   params,
-}: { params: Promise<{ contactId: string }> }) {
-  const { contactId } = await params;
-  redirect(`/c/${contactId}/contact`);
+}: { params: Promise<{ orgId: string, userId: String }> }) {
+  const { orgId, userId } = await params;
+  redirect(`/o/${orgId}/${userId}/profile`);
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import UserRow from "@/app/(app)/(other)/o/(orgHome)/[orgId]/_components/UserRow";
+import UserRow from "@/app/(app)/(other)/o/(home)/[orgId]/_components/UserRow";
 import Searchbar from "@/app/(app)/_components/Searchbar";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";

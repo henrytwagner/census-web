@@ -1,4 +1,4 @@
-// src/app/(wherever)/_components/Tabbar.tsx
+// src/app/(app)/_components/Tabbar.tsx
 "use client";
 
 import Link from "next/link";
@@ -8,15 +8,20 @@ import clsx from "clsx";
 export type TabLink = {
   key: string;
   label: string;
-  icon?: string;       // emoji/text icon
-  href: string;        // internal route (e.g. "/c", "/o")
-  prefetch?: boolean;  // defaults to Next.js default
-  replace?: boolean;   // rarely needed; for non-history navigation
+  icon?: string;
+  href: string;
+  prefetch?: boolean;
+  replace?: boolean;
 };
 
-export default function Tabbar({ tabs }: { tabs: TabLink[] }) {
+export default function Tabbar({
+  tabs,
+  onNavigate,              // NEW (optional)
+}: {
+  tabs: TabLink[];
+  onNavigate?: (key: string) => void;
+}) {
   const pathname = usePathname();
-
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
 
@@ -41,20 +46,17 @@ export default function Tabbar({ tabs }: { tabs: TabLink[] }) {
                 aria-controls={`panel-${t.key}`}
                 tabIndex={active ? 0 : -1}
                 className={clsx(active ? baseActive : baseInactive)}
+                onClick={() => onNavigate?.(t.key)}  // ← persist selection
               >
                 {t.icon && <span className="text-base">{t.icon}</span>}
                 <span className="text-base text-nowrap">{t.label}</span>
               </Link>
-
-              {/* vertical divider between tabs, preserved from your design */}
               {i < tabs.length - 1 && (
                 <div className="flex w-0.5 justify-center items-center self-stretch border-b border-b-border" />
               )}
             </div>
           );
         })}
-
-        {/* "+" block and trailing divider, preserved */}
         <div className="flex py-1 px-3 justify-center items-center gap-2 self-stretch border-b border-b-border">
           <span className="text-xl">+</span>
         </div>

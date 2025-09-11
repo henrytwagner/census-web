@@ -1,5 +1,3 @@
-"use client";
-
 // src/app/(app)/(other)/o/[orgId]/layout.tsx
 import { OrgProvider } from "@/app/(app)/contexts/org/OrgContext";
 import Tabbar, { TabLink } from "@/app/(app)/_components/Tabbar";

@@ -1,42 +1,63 @@
 // src/app/(app)/shared/person/PersonFrame.client.tsx
 "use client";
 
-import { useId, useState } from "react";
+import { useCallback, useId, useMemo, useState } from "react";
 import clsx from "clsx";
 import type { ComponentType } from "react";
 import PersonPage from "@/app/(app)/(other)/_components/PersonPage";
+import { useOptionalPersonView } from "@/app/(app)/contexts/view/useOptionalPersonView";
 
 type PersonFrameProps<P extends object = {}> = {
-  /** Sidebar React component (can be memoized by the caller) */
   Sidebar: ComponentType<P>;
-  /** Props to pass to the Sidebar */
   sidebarProps?: P;
-  /** Start open/closed */
+
+  /** Fully controlled mode (overrides context/local) */
+  open?: boolean;
+  onOpenChange?: (next: boolean) => void;
+
+  /** Uncontrolled fallback defaults */
   defaultOpen?: boolean;
-  /** Tailwind width class when open */
+
+  /** Layout */
   sidebarWidthClass?: string; // e.g. "w-50", "w-64"
-  /** Id prefix for aria-controls/id uniqueness */
   idPrefix?: string;
-  /** Tab content (children rendered under PersonPage tabs) */
+
   children: React.ReactNode;
 };
 
 export default function PersonFrame<P extends object = {}>({
   Sidebar,
   sidebarProps,
+  open: controlledOpen,
+  onOpenChange,
   defaultOpen = true,
   sidebarWidthClass = "w-50",
   idPrefix = "person",
   children,
 }: PersonFrameProps<P>) {
-  const [open, setOpen] = useState(defaultOpen);
   const domId = `${idPrefix}-${useId()}`;
+  const ctx = useOptionalPersonView();
+
+  // local state used only if neither controlled nor context values exist
+  const [uncontrolled, setUncontrolled] = useState(defaultOpen);
+
+  const open = useMemo(() => {
+    if (controlledOpen != null) return controlledOpen;     // 1) controlled
+    if (ctx?.sidebarOpen != null) return ctx.sidebarOpen;  // 2) context
+    return uncontrolled;                                    // 3) local
+  }, [controlledOpen, ctx?.sidebarOpen, uncontrolled]);
+
+  const setOpen = useCallback((next: boolean) => {
+    if (onOpenChange) return onOpenChange(next);           // 1) controlled
+    if (ctx?.setSidebarOpen) return ctx.setSidebarOpen(next); // 2) context
+    setUncontrolled(next);                                  // 3) local
+  }, [onOpenChange, ctx?.setSidebarOpen]);
 
   return (
     <main className="relative flex h-full w-full overflow-hidden bg-bg-dark">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-controls={`${domId}-sidebar`}
         className="absolute z-50 h-fit w-6 py-2 px-2"

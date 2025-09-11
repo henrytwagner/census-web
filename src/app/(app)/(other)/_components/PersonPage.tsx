@@ -4,6 +4,8 @@
 import { useMemo, PropsWithChildren } from "react";
 import Tabbar, { TabLink } from "@/app/(app)/_components/Tabbar";
 import { usePerson } from "@/app/(app)/contexts/person/PersonContext";
+import { useOptionalPersonView } from "@/app/(app)/contexts/view/PersonViewContext";
+
 
 export default function PersonPage({ children }: PropsWithChildren) {
   const { user, contact, linked, loading, error } = usePerson();
@@ -15,12 +17,15 @@ export default function PersonPage({ children }: PropsWithChildren) {
   const avatar = user?.profile?.profileImageUrl;
   const initials = `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
 
-  // prefer contact route, fallback user route
+
+  const view = useOptionalPersonView();
+
   const base = useMemo(() => {
-    if (contact?.id) return `/c/${contact.id}`;
-    if (user?.id) return `/u/${user.id}`;
-    return null;
-  }, [contact?.id, user?.id]);
+    const ids = { userId: user?.id, contactId: contact?.id };
+    if (view) return view.makeBaseHref(ids);
+    // (rare) fallback when provider is missing
+    return contact?.id ? `/c/${contact.id}` : null;
+  }, [view, user?.id, contact?.id]);
 
   const tabs: TabLink[] = useMemo(() => {
     if (!base) return [];

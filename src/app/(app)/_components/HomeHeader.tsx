@@ -3,7 +3,7 @@ interface ContactHeaderProps {
     imageUrl?: string;
 }
 
-export default function ContactHeader({ name, imageUrl }: ContactHeaderProps) {
+export default function HomeHeader({ name, imageUrl }: ContactHeaderProps) {
     return (
         <div className="flex items-center gap-4 self-stretch justify-between">
             <div className="flex h-fit w-full items-center self-stretch justify-between">

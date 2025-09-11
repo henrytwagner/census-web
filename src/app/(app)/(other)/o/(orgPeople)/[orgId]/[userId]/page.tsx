@@ -2,13 +2,17 @@
 
 import { useState, memo } from "react";
 import clsx from "clsx";
-import OrganizationSidebar from "@/app/(app)/o/[orgId]/[userId]/_components/Sidebar";
+import OrganizationSidebar from "@/app/(app)/(other)/o/(orgPeople)/[orgId]/[userId]/_components/Sidebar";
 import PersonPage from "@/app/(app)/_components/PersonPage";
+import { PersonProvider } from "@/app/(app)/contexts/person/PersonContext";
+import { useParams } from "next/navigation";
 
 const MemoSidebar = memo(OrganizationSidebar);
 
 export default function Home() {
     const [open, setOpen] = useState(false);
+    const params = useParams();
+
 
     return (
         <main className="relative flex h-full w-full overflow-hidden bg-bg-dark">
@@ -38,7 +42,9 @@ export default function Home() {
 
             {/* CONTENT: flex-1 fills remaining space; no extra margins needed */}
             <section className="h-full flex-1">
-                <PersonPage />
+                <PersonProvider userId={params.userId}>
+                    <PersonPage />
+                </PersonProvider>
             </section>
         </main>
     );

@@ -2,9 +2,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";   // ✅ App Router hook
-import Searchbar from "../../_components/Searchbar";
-import ContactRow from "./ContactRow";
+import { useRouter } from "next/navigation";
+import ContactRow from "@/app/(app)/(home)/c/_components/ContactRow";  // ✅ App Router hook
+import Searchbar from "@/app/(app)/_components/Searchbar";
 
 type ContactDto = {
     id: string;
@@ -58,5 +58,6 @@ export default function ContactTab() {
                 })
                 : <></>}
         </>
+
     );
 }

@@ -3,7 +3,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import Searchbar from "../../../../_components/Searchbar";
+import Searchbar from "@/app/(app)/_components/Searchbar";
 
 type OrgDto = {
     id: string;
@@ -96,6 +96,8 @@ export default function OrganizationSidebar() {
         }
         return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
     }, [data]);
+
+    
 
     return (
         <div className="flex w-50 h-full px-2 pb-8 flex-col items-start gap-2.5 flex-shrink-0 border-r border-r-border overflow-hidden">

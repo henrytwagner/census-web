@@ -1,43 +1,67 @@
 // src/app/(app)/_components/PersonPage.tsx
 "use client";
 
-import { useMemo, PropsWithChildren } from "react";
+import { useMemo, useEffect, PropsWithChildren } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Tabbar, { TabLink } from "@/app/(app)/_components/Tabbar";
 import { usePerson } from "@/app/(app)/contexts/person/PersonContext";
-import { useOptionalPersonView } from "@/app/(app)/contexts/view/PersonViewContext";
-
+import { usePersonView } from "@/app/(app)/contexts/view/PersonViewContext";
 
 export default function PersonPage({ children }: PropsWithChildren) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const { user, contact, linked, loading, error } = usePerson();
+  const { scopeKey, getLastTab, setLastTab, makeBaseHref } = usePersonView();
 
   const firstName = user?.profile?.firstName ?? contact?.firstName ?? "";
-  const lastName = user?.profile?.lastName ?? contact?.lastName ?? "";
-  const username = user?.username ? `@${user.username}` : undefined;
-  const display = [firstName, lastName].filter(Boolean).join(" ") || username || "Unknown";
-  const avatar = user?.profile?.profileImageUrl;
-  const initials = `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
+  const lastName  = user?.profile?.lastName  ?? contact?.lastName  ?? "";
+  const username  = user?.username ? `@${user.username}` : undefined;
+  const display   = [firstName, lastName].filter(Boolean).join(" ") || username || "Unknown";
+  const avatar    = user?.profile?.profileImageUrl;
+  const initials  = `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
 
-
-  const view = useOptionalPersonView();
-
+  // Base path is scope-aware (e.g. /o/:orgId/:userId or /c/:contactId)
   const base = useMemo(() => {
-    const ids = { userId: user?.id, contactId: contact?.id };
-    if (view) return view.makeBaseHref(ids);
-    // (rare) fallback when provider is missing
-    return contact?.id ? `/c/${contact.id}` : null;
-  }, [view, user?.id, contact?.id]);
+    return makeBaseHref({ userId: user?.id, contactId: contact?.id });
+  }, [makeBaseHref, user?.id, contact?.id]);
 
+  // ✅ Build tabs purely from available data
   const tabs: TabLink[] = useMemo(() => {
     if (!base) return [];
     const list: TabLink[] = [];
-    if (user?.id) list.push({ key: "profile", label: "Profile", icon: "🙍", href: `${base}/profile` });
+    if (user?.id)    list.push({ key: "profile", label: "Profile", icon: "🙍", href: `${base}/profile` });
     if (contact?.id) list.push({ key: "contact", label: "Contact", icon: "👤", href: `${base}/contact` });
-    // list.push({ key: "notes", label: "Notes", icon: "📝", href: `${base}/notes` });
     return list;
   }, [base, user?.id, contact?.id]);
 
+  // Defaults by scope (still respected)
+  const defaultTabForScope = useMemo<"profile" | "contact">(() => {
+    if (scopeKey.startsWith("o:")) return "profile"; // org view: default to profile
+    if (scopeKey === "c")          return "contact"; // contact view: default to contact
+    return "contact";
+  }, [scopeKey]);
+
+  // Keep tab stable across person changes within the same scope
+  useEffect(() => {
+    if (!base || tabs.length === 0) return;
+
+    const last = getLastTab(scopeKey);
+    const desired = last ?? defaultTabForScope;
+
+    const availableKeys = new Set(tabs.map(t => t.key));
+    const fallback = availableKeys.has(defaultTabForScope) ? defaultTabForScope : tabs[0]?.key;
+
+    const target = availableKeys.has(desired) ? desired : fallback;
+    if (!target) return;
+
+    if (!pathname.startsWith(`${base}/${target}`)) {
+      router.replace(`${base}/${target}`);
+    }
+  }, [base, tabs, pathname, router, scopeKey, getLastTab, defaultTabForScope]);
+
   if (loading) return <div className="text-text/70 text-sm p-6">Loading…</div>;
-  if (error) return <div className="text-red-400 text-sm p-6">{error}</div>;
+  if (error)   return <div className="text-red-400 text-sm p-6">{error}</div>;
 
   return (
     <div className="p-6 text-text">
@@ -56,14 +80,15 @@ export default function PersonPage({ children }: PropsWithChildren) {
       {/* Tabs */}
       {base && tabs.length > 0 && (
         <div className="mt-6">
-          <Tabbar tabs={tabs} />
+          <Tabbar
+            tabs={tabs}
+            onNavigate={(key) => setLastTab(key, scopeKey)} // persist selection for this scope
+          />
         </div>
       )}
 
-      {/* 👇 tab content renders here */}
-      <div className="mt-6">
-        {children}
-      </div>
+      {/* Tab content */}
+      <div className="mt-6">{children}</div>
     </div>
   );
 }

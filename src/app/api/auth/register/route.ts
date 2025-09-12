@@ -1,6 +1,12 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+type RegisterBody = {
+  email: string;
+  password: string;
+  username?: string;
+};
+
 const backend =
   process.env.BACKEND_URL ||
   process.env.API_BASE_URL ||
@@ -8,7 +14,7 @@ const backend =
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json(); // { username, email, password }
+    const body = (await req.json()) as RegisterBody; // { username, email, password }
     const resp = await fetch(`${backend}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -38,7 +44,8 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true });
-  } catch (e: any) {
-    return NextResponse.json({ error: e?.message ?? "Register proxy error" }, { status: 500 });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : "Register proxy error";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

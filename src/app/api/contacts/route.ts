@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+// src/app/api/contacts/route.ts
 import { cookies } from "next/headers";
 
 const backend =
@@ -6,11 +6,8 @@ const backend =
     process.env.API_BASE_URL ||
     "http://localhost:8080";
 
-export async function GET(
-    _req: Request,
-) {
+export async function GET() {
     const token = (await cookies()).get("ACCESS_TOKEN")?.value;
-    const authHeader = token ? { Authorization: `Bearer ${token}` } : {};
 
     try {
         const headers = new Headers({ Accept: "application/json" });
@@ -18,7 +15,7 @@ export async function GET(
 
         const resp = await fetch(`${backend}/api/contacts`, {
             method: "GET",
-            headers,            // ✅ concrete Headers
+            headers,
             cache: "no-store",
         });
 
@@ -40,8 +37,10 @@ export async function GET(
             },
         });
     } catch (e: unknown) {
-        console.error("Contacts BFF GET error:", e);
         const msg = e instanceof Error ? e.message : "Contacts proxy error";
-        return NextResponse.json({ error: msg }, { status: 502 });
+        return new Response(JSON.stringify({ error: msg }), {
+            status: 502,
+            headers: { "content-type": "application/json" },
+        });
     }
 }

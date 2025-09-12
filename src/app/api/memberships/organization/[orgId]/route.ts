@@ -8,11 +8,10 @@ const backend =
 
 export async function GET(
     _req: Request,
-    ctx: { params: { orgId: string } }
+    ctx: { params: Promise<{ orgId: string }> } // ⇐ params is a Promise
 ) {
     const { orgId } = await ctx.params;
     const token = (await cookies()).get("ACCESS_TOKEN")?.value;
-    const authHeader = token ? { Authorization: `Bearer ${token}` } : {};
 
     try {
         const headers = new Headers({ Accept: "application/json" });

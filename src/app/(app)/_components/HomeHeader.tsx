@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface ContactHeaderProps {
     name: string;
     imageUrl?: string;
@@ -12,7 +14,7 @@ export default function HomeHeader({ name, imageUrl }: ContactHeaderProps) {
                 </div>
                 <div>
                     <div className="bg-blue-700 flex w-32 h-32 items-center rounded-b-4xl">{imageUrl ? (
-                        <img
+                        <Image
                             src={imageUrl}
                             alt={`${name} logo`}
                             className="w-full h-full object-cover"

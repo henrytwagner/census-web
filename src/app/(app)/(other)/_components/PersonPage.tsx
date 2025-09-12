@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Tabbar, { TabLink } from "@/app/(app)/_components/Tabbar";
 import { usePersonView } from "@/app/(app)/contexts/view/PersonViewContext";
 import { usePerson } from "@/lib/hooks/usePerson";
+import Image from "next/image";
 
 export default function PersonPage({ children }: PropsWithChildren) {
   const router = useRouter();
@@ -70,7 +71,7 @@ export default function PersonPage({ children }: PropsWithChildren) {
       {/* Header */}
       <div className="flex items-center gap-4">
         <div className="bg-gray-700 flex w-24 h-24 items-center justify-center rounded-full overflow-hidden text-white font-medium text-4xl">
-          {avatar ? <img src={avatar} alt={display} className="w-full h-full object-cover" /> : <span>{initials}</span>}
+          {avatar ? <Image src={avatar} alt={display} className="w-full h-full object-cover" /> : <span>{initials}</span>}
         </div>
         <div className="flex flex-col">
           <p className="text-2xl">{display}</p>

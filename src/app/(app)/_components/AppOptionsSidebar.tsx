@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 
 export default function AppOptionsSidebar({
@@ -16,7 +17,7 @@ export default function AppOptionsSidebar({
     const pathname = usePathname();
 
     // Close on route change
-    useEffect(() => { onClose(); /* eslint-disable-next-line */ }, [pathname]);
+    useEffect(() => { onClose(); }, [pathname, onClose]);
 
     // Close on Escape
     useEffect(() => {
@@ -50,7 +51,7 @@ export default function AppOptionsSidebar({
             >
                 {/* Not functioning */}
                 <div className="p-4 border-b border-border flex items-center gap-3">
-                    <img
+                    <Image
                         src="/avatar.png"
                         alt=""
                         className="w-10 h-10 rounded-full object-cover bg-blue-700"

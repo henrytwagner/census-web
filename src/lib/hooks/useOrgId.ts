@@ -1,10 +1,8 @@
-// src/app/hooks/useRouteOrgId.ts
+// src/lib/hooks/useOrgId.ts
 "use client";
 import { useParams } from "next/navigation";
 
-export function useRouteOrgId(): string | undefined {
-  const p = useParams();
-  // next/navigation params are string|string[]|undefined
-  const raw = (p as any)?.orgId as string | undefined;
-  return typeof raw === "string" ? raw : undefined;
+export function useRouteOrgId() {
+    const params = useParams<{ orgId?: string }>();
+    return typeof params.orgId === "string" ? params.orgId : undefined;
 }

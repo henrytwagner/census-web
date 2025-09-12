@@ -17,7 +17,7 @@ type ContactDto = {
 export default function ContactSidebar() {
 
     const router = useRouter();
-    const { contacts, loading, error } = useContacts()
+    const { contacts, error } = useContacts()
 
     const grouped = useMemo(() => {
         const m = new Map<string, ContactDto[]>();

@@ -1,6 +1,5 @@
 // src/app/api/organizations/[orgId]/route.ts
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
 
 const backend = process.env.BACKEND_URL || "http://localhost:8080";
 

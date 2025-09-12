@@ -7,7 +7,7 @@ import type { ComponentType } from "react";
 import PersonPage from "@/app/(app)/(other)/_components/PersonPage";
 import { useOptionalPersonView } from "@/app/(app)/contexts/view/useOptionalPersonView";
 
-type PersonFrameProps<P extends object = {}> = {
+type PersonFrameProps<P extends object = Record<string, unknown>> = {
   Sidebar: ComponentType<P>;
   sidebarProps?: P;
 
@@ -25,7 +25,7 @@ type PersonFrameProps<P extends object = {}> = {
   children: React.ReactNode;
 };
 
-export default function PersonFrame<P extends object = {}>({
+export default function PersonFrame<P extends object = Record<string, unknown>>({
   Sidebar,
   sidebarProps,
   open: controlledOpen,
@@ -38,20 +38,27 @@ export default function PersonFrame<P extends object = {}>({
   const domId = `${idPrefix}-${useId()}`;
   const ctx = useOptionalPersonView();
 
+  // extract only what we need from ctx
+  const sidebarOpenCtx = ctx?.sidebarOpen;
+  const setSidebarOpenCtx = ctx?.setSidebarOpen;
+
   // local state used only if neither controlled nor context values exist
   const [uncontrolled, setUncontrolled] = useState(defaultOpen);
 
   const open = useMemo(() => {
-    if (controlledOpen != null) return controlledOpen;     // 1) controlled
-    if (ctx?.sidebarOpen != null) return ctx.sidebarOpen;  // 2) context
-    return uncontrolled;                                    // 3) local
-  }, [controlledOpen, ctx?.sidebarOpen, uncontrolled]);
+    if (controlledOpen != null) return controlledOpen;   // 1) controlled
+    if (sidebarOpenCtx != null) return sidebarOpenCtx;   // 2) context
+    return uncontrolled;                                 // 3) local
+  }, [controlledOpen, sidebarOpenCtx, uncontrolled]);
 
-  const setOpen = useCallback((next: boolean) => {
-    if (onOpenChange) return onOpenChange(next);           // 1) controlled
-    if (ctx?.setSidebarOpen) return ctx.setSidebarOpen(next); // 2) context
-    setUncontrolled(next);                                  // 3) local
-  }, [onOpenChange, ctx?.setSidebarOpen]);
+  const setOpen = useCallback(
+    (next: boolean) => {
+      if (onOpenChange) return onOpenChange(next);        // 1) controlled
+      if (setSidebarOpenCtx) return setSidebarOpenCtx(next); // 2) context
+      setUncontrolled(next);                              // 3) local
+    },
+    [onOpenChange, setSidebarOpenCtx]
+  );
 
   return (
     <main className="relative flex h-full w-full overflow-hidden bg-bg-dark">

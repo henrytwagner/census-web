@@ -3,6 +3,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 
 type OrganizationDto = {
     id: string;
@@ -13,7 +15,7 @@ type OrganizationDto = {
 export const Header = () => {
     const router = useRouter();
     const [orgs, setOrgs] = useState<OrganizationDto[]>([]);
-    const [err, setErr] = useState<string | null>(null);
+    const [ , setErr] = useState<string | null>(null);
     const [menuOpen, setMenuOpen] = useState(false);     // NEW: sidebar open/close state
 
 
@@ -74,7 +76,7 @@ export const Header = () => {
                                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); router.push(`/o/${org.id}`); } }}
                             >
                                 {hasImage && (
-                                    <img
+                                    <Image
                                         src={org.imageUrl as string}
                                         alt={`${org.name} logo`}
                                         className="w-full h-full object-cover"
@@ -142,8 +144,8 @@ export const Header = () => {
                         </div>
 
                         <nav className="p-2">
-                            <a className="block px-3 py-2 rounded-lg hover:bg-bg-dark" href="/preferences">Preferences</a>
-                            <a className="block px-3 py-2 rounded-lg hover:bg-bg-dark" href="/">Home</a>
+                            <Link className="block px-3 py-2 rounded-lg hover:bg-bg-dark" href="/preferences">Preferences</Link>
+                            <Link className="block px-3 py-2 rounded-lg hover:bg-bg-dark" href="/">Home</Link>
                         </nav>
 
                         <div className="mt-auto p-4">

@@ -57,12 +57,12 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4" noValidate>
                 <div>
                     <input {...register("firstName")} placeholder="First Name" className="w-full rounded border p-2" /> 
-                    {errors.username && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
+                    {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
                 </div>
 
                 <div>
                     <input {...register("lastName")} placeholder="Last Name" className="w-full rounded border p-2" />
-                    {errors.username && <p className="mt-1 text-sm text-red-600">{errors.lastName.message}</p>}
+                    {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName.message}</p>}
                 </div>
 
                 <div>

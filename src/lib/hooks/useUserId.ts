@@ -1,10 +1,8 @@
-// src/app/hooks/useRouteUserId.ts
+// src/lib/hooks/useUserId.ts
 "use client";
 import { useParams } from "next/navigation";
 
-export function useRouteUserId(): string | undefined {
-  const p = useParams();
-  // next/navigation params are string|string[]|undefined
-  const raw = (p as any)?.userId as string | undefined;
-  return typeof raw === "string" ? raw : undefined;
+export function useRouteUserId() {
+  const params = useParams<{ userId?: string }>();
+  return typeof params.userId === "string" ? params.userId : undefined;
 }

@@ -1,17 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
 import HomeHeader from "@/app/(app)/_components/HomeHeader";
-import ContactTab from "@/app/(app)/(home)/c/_components/ContactsTab";
 import Tabbar from "@/app/(app)/_components/Tabbar";
-import ContactRow from "./c/_components/ContactRow";
-
-type TabPage = {
-    key: string;
-    icon?: string;
-    label: string;
-    component: React.ReactNode;
-};
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     // define tabs (label/icon + component)

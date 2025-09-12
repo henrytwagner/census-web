@@ -1,19 +1,20 @@
 // src/app/(app)/(other)/o/[orgId]/[userId]/_components/Sidebar.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Searchbar from "@/app/(app)/_components/Searchbar";
 import { useRouteOrgId } from "@/lib/hooks/useOrgId"
 import { useOrg } from "@/lib/hooks/useOrg";
 import { useMembershipUsers } from "@/lib/hooks/useMembershipUsers";
+import Image from "next/image";
 
 
 export default function OrganizationSidebar() {
   const router = useRouter();
   const orgId = useRouteOrgId();
   const { org } = useOrg(orgId); // header bits
-  const { memberships, loading, error } = useMembershipUsers(orgId);
+  const { memberships, error } = useMembershipUsers(orgId);
 
 
   const grouped = useMemo(() => {
@@ -49,7 +50,7 @@ export default function OrganizationSidebar() {
         <div className="flex flex-col items-center gap-2">
           <div className="bg-red-600 h-16 w-16 rounded-b-2xl overflow-hidden">
             {org?.imageUrl && (
-              <img src={org.imageUrl} alt={`${org.name} logo`} className="w-full h-full object-cover" />
+              <Image src={org.imageUrl} alt={`${org.name} logo`} className="w-full h-full object-cover" />
             )}
           </div>
           <p className="text-s not-italic font-normal">{org?.name ?? ""}</p>

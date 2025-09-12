@@ -44,7 +44,6 @@ export function useMembershipUsers(orgId?: string) {
                 }
 
                 const payload: MembershipDto[] = await res.json();
-                console.log(payload);
                 setMemberships(payload);
             } catch (e) {
                 if (!ctrl.signal.aborted) {

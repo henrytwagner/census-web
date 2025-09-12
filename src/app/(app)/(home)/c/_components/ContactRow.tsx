@@ -1,4 +1,6 @@
 // ContactRow.tsx
+import Image from 'next/image';
+
 interface ContactRowProps {
     firstName: string;
     lastName: string;
@@ -33,7 +35,7 @@ export default function ContactRow({
             <div className="flex flex-row items-center gap-4 self-stretch">
                 <div className="bg-gray-700 flex w-12 h-12 items-center justify-center rounded-full overflow-hidden text-white font-medium">
                     {imageUrl ? (
-                        <img src={imageUrl} alt={`${firstName} ${lastName}`} className="w-full h-full object-cover" />
+                        <Image src={imageUrl} alt={`${firstName} ${lastName}`} className="w-full h-full object-cover" />
                     ) : (
                         <span>{initials}</span>
                     )}

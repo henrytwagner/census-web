@@ -2,6 +2,7 @@
 "use client";
 import { useOrg } from "@/lib/hooks/useOrg";
 import { useRouteOrgId } from "@/lib/hooks/useOrgId";
+import Image from "next/image";
 
 export default function OrganizationHeader() {
     const orgId = useRouteOrgId()
@@ -23,7 +24,7 @@ export default function OrganizationHeader() {
                 <div>
                     <div className="bg-red-700 flex w-32 h-32 items-center rounded-b-4xl overflow-hidden">
                         {imageUrl ? (
-                            <img
+                            <Image
                                 src={imageUrl}
                                 alt={`${name} logo`}
                                 className="w-full h-full object-cover"

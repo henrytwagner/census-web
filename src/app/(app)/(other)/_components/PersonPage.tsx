@@ -4,15 +4,17 @@
 import { useMemo, useEffect, PropsWithChildren } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Tabbar, { TabLink } from "@/app/(app)/_components/Tabbar";
-import { usePerson } from "@/app/(app)/contexts/person/PersonContext";
 import { usePersonView } from "@/app/(app)/contexts/view/PersonViewContext";
+import { usePerson } from "@/lib/hooks/usePerson";
 
 export default function PersonPage({ children }: PropsWithChildren) {
   const router = useRouter();
   const pathname = usePathname();
-
-  const { user, contact, linked, loading, error } = usePerson();
+  
   const { scopeKey, getLastTab, setLastTab, makeBaseHref } = usePersonView();
+
+  const {user, contact, linked, loading, error} = usePerson();
+
 
   const firstName = user?.profile?.firstName ?? contact?.firstName ?? "";
   const lastName  = user?.profile?.lastName  ?? contact?.lastName  ?? "";

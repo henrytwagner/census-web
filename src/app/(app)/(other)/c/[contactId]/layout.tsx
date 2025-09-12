@@ -1,5 +1,4 @@
 // src/app/(app)/(other)/c/[contactId]/layout.tsx  (Server Component)
-import { PersonProvider } from "@/app/(app)/contexts/person/PersonContext";
 import ContactFrame from "@/app/(app)/(other)/_components/person-frame.client";
 import PersonFrame from "@/app/(app)/(other)/_components/person-frame.client";
 import ContactSidebar from "@/app/(app)/(other)/c/[contactId]/_components/Sidebar";
@@ -13,9 +12,7 @@ export default async function ContactLayout({
     const { contactId } = await params; // Next 15: await params
 
     return (
-        <PersonProvider contactId={contactId}>
-            <PersonFrame Sidebar={ContactSidebar}>{children}</PersonFrame>
-        </PersonProvider>
+        <PersonFrame Sidebar={ContactSidebar}>{children}</PersonFrame>
     );
 }
 

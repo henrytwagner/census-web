@@ -1,14 +1,17 @@
-"use client";
-
 // src/app/(app)/(other)/o/[orgId]/_components/OrganizationHeader.tsx
-import { useOrg } from "@/app/(app)/contexts/org/OrgContext";
+"use client";
+import { useOrg } from "@/lib/hooks/useOrg";
+import { useRouteOrgId } from "@/lib/hooks/useOrgId";
 
 export default function OrganizationHeader() {
-    const { orgId, org } = useOrg();
+    const orgId = useRouteOrgId()
+    const { org } = useOrg(orgId);
 
     const name = org?.name ?? "";
     const description = org?.description ?? "";
     const imageUrl = org?.imageUrl;
+
+    if (!orgId) return null; // or a tiny fallback
 
     return (
         <div className="flex items-center gap-4 self-stretch justify-between">

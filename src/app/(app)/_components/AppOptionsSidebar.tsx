@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 
-export default function SidebarSheet({
+export default function AppOptionsSidebar({
     open,
     onClose,
 }: {

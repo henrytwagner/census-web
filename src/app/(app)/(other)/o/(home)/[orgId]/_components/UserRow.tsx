@@ -1,13 +1,11 @@
 // UserRow.tsx
 interface UserRowProps {
-    firstName?: string;
-    lastName?: string;
+    firstName: string;
+    lastName: string;
     username: string;
     phone: string;
     email: string;
     imageUrl?: string;
-    lastActive: string;
-    status: "Active" | "Inactive" | string;
     onClick?: () => void;           // 👈 added
 }
 
@@ -18,12 +16,10 @@ export default function UserRow({
     phone,
     email,
     imageUrl,
-    lastActive,
-    status,
     onClick,
 }: UserRowProps) {
     const initials = `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
-    const isActive = String(status).toLowerCase() === "active";
+    // const isActive = String(status).toLowerCase() === "active";
 
     return (
         <div
@@ -56,12 +52,11 @@ export default function UserRow({
 
             <p className="text-sm text-muted not-italic font-normal">{phone}</p>
             <p className="text-sm text-muted not-italic font-normal">{email}</p>
-            <p className="text-sm text-muted not-italic font-normal">{lastActive}</p>
 
-            <div className="flex items-center gap-2.5">
+            {/* <div className="flex items-center gap-2.5">
                 <div className={`h-2 w-2 rounded-full ${isActive ? "bg-green-500" : "bg-red-500"}`}></div>
                 <div className={`${isActive ? "text-green-500" : "text-red-500"} text-sm not-italic font-normal`}>{status}</div>
-            </div>
+            </div> */}
         </div>
     );
 }

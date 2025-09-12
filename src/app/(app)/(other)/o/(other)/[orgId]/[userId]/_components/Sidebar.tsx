@@ -1,85 +1,27 @@
-// OrganizationSidebar.tsx
+// src/app/(app)/(other)/o/[orgId]/[userId]/_components/Sidebar.tsx
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Searchbar from "@/app/(app)/_components/Searchbar";
-import { usePerson } from "@/app/(app)/contexts/person/PersonContext";
-import { useOrg, type OrgInfo } from "@/app/(app)/contexts/org/OrgContext";
+import { useRouteOrgId } from "@/lib/hooks/useOrgId"
+import { useOrg } from "@/lib/hooks/useOrg";
+import { useMembershipUsers } from "@/lib/hooks/useMembershipUsers";
 
-type MemberDto = {
-  id: string;
-  username: string;
-  email?: string;
-  phone?: string;
-  status?: string;
-  profile?: {
-    firstName?: string;
-    lastName?: string;
-    bio?: string;
-    profileImageUrl?: string;
-  };
-};
 
 export default function OrganizationSidebar() {
   const router = useRouter();
-  const { orgId: ctxOrgId, org: ctxOrg } = useOrg(); // ✅ preferred source
-  const params = useParams() as { orgId?: string };
-  const orgId = ctxOrgId ?? params.orgId ?? "";      // fallback only if needed
+  const orgId = useRouteOrgId();
+  const { org } = useOrg(orgId); // header bits
+  const { memberships, loading, error } = useMembershipUsers(orgId);
 
-  const [org, setOrg] = useState<OrgInfo | null>(ctxOrg ?? null);
-  const [data, setData] = useState<MemberDto[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
-  const { setPersonByUserId } = usePerson();
-
-  // If org not provided by context, fetch it once
-  useEffect(() => {
-    if (!orgId || org) return; // have id and already have org from context
-    let alive = true;
-    (async () => {
-      try {
-        const res = await fetch(`/api/organizations/${orgId}`, { cache: "no-store" });
-        const txt = await res.text();
-        if (!res.ok) throw new Error(txt || `Failed: ${res.status}`);
-        const json = JSON.parse(txt) as OrgInfo;
-        if (alive) setOrg(json);
-      } catch (e) {
-        if (alive) setError(e instanceof Error ? e.message : "Failed to load organization");
-      }
-    })();
-    return () => { alive = false; };
-  }, [orgId, org]);
-
-  // Fetch members
-  useEffect(() => {
-    if (!orgId) return;
-    let alive = true;
-    (async () => {
-      try {
-        const res = await fetch(`/api/memberships/organization/${orgId}`, { cache: "no-store" });
-        const txt = await res.text();
-        if (!res.ok) throw new Error(txt || `Failed: ${res.status}`);
-        const payload = JSON.parse(txt);
-        const list: unknown =
-          Array.isArray(payload) ? payload :
-            payload?.items ?? payload?.users ?? payload?.members ?? [];
-        if (!Array.isArray(list)) throw new Error("Unexpected memberships response");
-        if (alive) setData(list as MemberDto[]);
-      } catch (e) {
-        if (alive) setError(e instanceof Error ? e.message : "Failed to load members");
-      }
-    })();
-    return () => { alive = false; };
-  }, [orgId]);
-
-  // Group members by initial
   const grouped = useMemo(() => {
-    const items = (data ?? []).map((m) => ({
-      id: m.id,
-      firstName: m.profile?.firstName ?? "",
-      lastName: m.profile?.lastName ?? "",
-      status: m.status ?? "Active",
+    const items = (memberships ?? []).map((m) => ({
+      id: m.user.id,
+      firstName: m.user.firstName ?? "",
+      lastName: m.user.lastName ?? "",
+      // status: m.status ?? "Active",
     }));
     items.sort((a, b) => {
       const ln = a.lastName.localeCompare(b.lastName, undefined, { sensitivity: "base" });
@@ -93,11 +35,11 @@ export default function OrganizationSidebar() {
       map.get(letter)!.push(it);
     }
     return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
-  }, [data]);
+  }, [memberships]);
 
   const onMemberClick = (memberId: string) => {
-    setPersonByUserId(memberId);          // update PersonContext
-    router.push(`/o/${orgId}/${memberId}`); // navigate
+    if (!orgId) return;
+    router.push(`/o/${orgId}/${memberId}`);
   };
 
   return (
@@ -106,15 +48,11 @@ export default function OrganizationSidebar() {
         <div className="py-2 w-2.5" />
         <div className="flex flex-col items-center gap-2">
           <div className="bg-red-600 h-16 w-16 rounded-b-2xl overflow-hidden">
-            {(org ?? ctxOrg)?.imageUrl && (
-              <img
-                src={(org ?? ctxOrg)!.imageUrl!}
-                alt={`${(org ?? ctxOrg)!.name} logo`}
-                className="w-full h-full object-cover"
-              />
+            {org?.imageUrl && (
+              <img src={org.imageUrl} alt={`${org.name} logo`} className="w-full h-full object-cover" />
             )}
           </div>
-          <p className="text-s not-italic font-normal">{(org ?? ctxOrg)?.name ?? ""}</p>
+          <p className="text-s not-italic font-normal">{org?.name ?? ""}</p>
         </div>
         <div className="py-2">
           <p className="text-s not-italic font-normal">+</p>

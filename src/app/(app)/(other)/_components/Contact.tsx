@@ -1,7 +1,7 @@
 // src/app/(app)/(other)/_components/Contact.tsx (or wherever this "future overview" lives)
 "use client";
 
-import { usePerson } from "@/app/(app)/contexts/person/PersonContext";
+import { usePerson } from "@/lib/hooks/usePerson"
 
 export default function Contact() {
     const { user, contact, linked, loading, error } = usePerson();
